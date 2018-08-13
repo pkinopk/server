@@ -1,0 +1,24 @@
+{
+  "name": "game-of-thrones-server",
+  "version": "1.0.0",
+  "description": "Game of Thrones Wiki Server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pkinopk/game-of-thrones-server.git"
+  },
+  "author": "Paulo Kinopk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pkinopk/game-of-thrones-server/issues"
+  },
+  "homepage": "https://github.com/pkinopk/game-of-thrones-server#readme",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.3"
+  }
+}
