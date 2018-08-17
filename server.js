@@ -3,7 +3,7 @@ const cors = require('cors');
 let app = express();
 const service = require('./game-of-thrones.service');
 const bodyParser = require('body-parser');
-app.use(bodyParser.json()); //Parse json http bodies
+app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
 var corsOptions = {
