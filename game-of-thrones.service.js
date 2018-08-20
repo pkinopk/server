@@ -3,7 +3,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 // Constructor
 class Character {
-  constructor(firstName, lastName, title, status, death, age, origin, gender, family, pictureURL) {
+  constructor(
+    firstName,
+    lastName,
+    title,
+    status,
+    death,
+    age,
+    origin,
+    gender,
+    family,
+    pictureURL
+  ) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.title = title;
@@ -14,6 +25,7 @@ class Character {
     this.gender = gender;
     this.family = family;
     this.pictureURL = pictureURL;
+    this.fullName = `${firstName} ${lastName}`;
   }
 }
 exports.Character = Character;
@@ -47,7 +59,10 @@ var characters = [
   new Character(
     'Cersei',
     'Lannister',
-    ['Queen of the Andals and the First Men', 'Protector of the Seven Kingdoms'],
+    [
+      'Queen of the Andals and the First Men',
+      'Protector of the Seven Kingdoms'
+    ],
     'Alive',
     '',
     '42',
@@ -66,7 +81,7 @@ var characters = [
       'Lady of Dragonstone',
       'Daenerys Stormborn',
       'The Breaker of Chains',
-      'The Mother of Dragons',
+      'The Mother of Dragons'
     ],
     'Alive',
     '',
@@ -75,13 +90,16 @@ var characters = [
     'Female',
     'Targaryen',
     'https://vignette.wikia.nocookie.net/gameofthrones/images/5/5f/Daenerys_Dragonpit.jpg/revision/latest?cb=20171015095128'
-  ),
+  )
 ];
 exports.characters = characters;
 
 var isDuplicated = function(newCharacter) {
   for (let character of characters) {
-    if ((character.firstName + character.lastName).toLowerCase() == (newCharacter.firstName + newCharacter.lastName).toLowerCase()) {
+    if (
+      (character.firstName + character.lastName).toLowerCase() ==
+      (newCharacter.firstName + newCharacter.lastName).toLowerCase()
+    ) {
       return true;
     }
   }
