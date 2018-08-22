@@ -30,7 +30,7 @@ class Character {
 }
 exports.Character = Character;
 
-// Character List
+// Characters List
 var characters = [
   new Character(
     'Jon',
@@ -90,6 +90,18 @@ var characters = [
     'Female',
     'Targaryen',
     'https://vignette.wikia.nocookie.net/gameofthrones/images/5/5f/Daenerys_Dragonpit.jpg/revision/latest?cb=20171015095128'
+  ),
+  new Character(
+    'Hodor',
+    '',
+    [''],
+    'Deceased',
+    '303 AC at the Cave of the Three-Eyed Raven Killed by wights, giving time for Bran Stark to escape',
+    '',
+    'Winterfell',
+    'Male',
+    'Other',
+    'https://vignette.wikia.nocookie.net/gameofthrones/images/1/18/Season_6_hodor_main.jpg/revision/latest/scale-to-width-down/350?cb=20160617020835'
   )
 ];
 exports.characters = characters;
