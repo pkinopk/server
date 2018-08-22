@@ -48,7 +48,7 @@ var characters = [
     'Sansa',
     'Stark',
     ['Lady of Winterfell'],
-    'Alice',
+    'Alive',
     '',
     '19',
     'Winterfell',
