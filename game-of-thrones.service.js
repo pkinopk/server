@@ -75,7 +75,7 @@ var characters = [
     'Daenerys',
     'Targaryen',
     [
-      'Queen of the Andals, the Rhoynar, and the First Men',
+      'Queen of the Andals - the Rhoynar - and the First Men',
       'Protector of the Seven Kingdoms',
       'Khaleesi of the Great Grass Sea',
       'Lady of Dragonstone',
