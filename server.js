@@ -8,7 +8,7 @@ app.use(cors(corsOptions));
 
 var corsOptions = {
   origin: '*',
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
 app.get('/', function(req, res) {
@@ -24,7 +24,8 @@ app.get('/characterlist/', function(req, res) {
 app.post('/addcharacter', function(req, res) {
   res.header('Content-Type', 'application/json');
   if (!service.isDuplicated(req.body)) {
-    service.characters.push(req.body);
+    let newChar = new service.Character(req.body);
+    service.characters.push(newChar);
     res.send(service.characters);
   } else {
     res.send({ error: 'Duplicated character' });
