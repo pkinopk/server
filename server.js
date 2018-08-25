@@ -24,8 +24,7 @@ app.get('/characterlist/', function(req, res) {
 app.post('/addcharacter', function(req, res) {
   res.header('Content-Type', 'application/json');
   if (!service.isDuplicated(req.body)) {
-    let newChar = new service.Character(req.body);
-    service.characters.push(newChar);
+    service.characters.push(req.body);
     res.send(service.characters);
   } else {
     res.send({ error: 'Duplicated character' });
