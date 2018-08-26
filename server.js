@@ -34,7 +34,7 @@ app.post('/addcharacter', function(req, res) {
 app.put('/updatecharacter/:id', function(req, res) {
   console.log('body', req.body);
   if (req.params.id >= 0 && service.characters.length > req.params.id) {
-    // service.characters[id] = req.body;
+    service.characters[req.params.id] = req.body;
     res.send('{"success": true }');
   } else {
     res.send('{"success": false }');
