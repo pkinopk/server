@@ -25,7 +25,7 @@ class Character {
     this.gender = gender;
     this.family = family;
     this.pictureURL = pictureURL;
-    this.fullName = `${firstName} ${lastName}`;
+    this.fullName = `${firstName} ${lastName}`.trim();
   }
 }
 exports.Character = Character;

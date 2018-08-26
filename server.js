@@ -31,5 +31,27 @@ app.post('/addcharacter', function(req, res) {
   }
 });
 
+app.put('/updatecharacter/:id', function(req, res) {
+  console.log('body', req.body);
+  if (req.params.id >= 0 && service.characters.length > req.params.id) {
+    service.characters[id] = req.body;
+    res.send('{"success": true }');
+  } else {
+    res.send('{"success": false }');
+  }
+  console.log(service.characters);
+});
+
+// app.delete('/deletecharacter/:id', function(req, res) {
+//   console.log('body', req.body);
+//   if (req.params.id >= 0 && service.characters.length > req.params.id) {
+//     service.characters.splice(req.params.id, 1);
+//     res.send('{"success": true }');
+//   } else {
+//     res.send('{"success": false }');
+//   }
+//   console.log(service.characters);
+// });
+
 app.listen(process.env.PORT || 8000);
 console.log('Running locally at port 8000...');
