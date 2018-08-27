@@ -326,7 +326,7 @@ var characters = [
     'Baratheon',
     'https://vignette.wikia.nocookie.net/gameofthrones/images/7/7c/Tommen_blood_of_my_blood.jpg/revision/latest/scale-to-width-down/350?cb=20160530234845'
   )
-];
+].sort(compare);
 exports.characters = characters;
 
 var isDuplicated = function(newCharacter) {
@@ -341,3 +341,13 @@ var isDuplicated = function(newCharacter) {
   return false;
 };
 exports.isDuplicated = isDuplicated;
+
+function compare(a, b) {
+  if (a.firstName < b.firstName) {
+    return -1;
+  }
+  if (a.firstName > b.firstName) {
+    return 1;
+  }
+  return 0;
+}
