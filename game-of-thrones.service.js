@@ -106,7 +106,7 @@ var characters = [
   new Character(
     'Arya',
     'Stark',
-    '',
+    [''],
     'Alive',
     '',
     '17',
@@ -118,7 +118,7 @@ var characters = [
   new Character(
     'Bran',
     'Stark',
-    '',
+    [''],
     'Alive',
     '',
     '16',
@@ -154,7 +154,7 @@ var characters = [
   new Character(
     'Tormund',
     '',
-    '',
+    [''],
     'Alive',
     '',
     '',
@@ -166,7 +166,7 @@ var characters = [
   new Character(
     'Meera',
     'Reed',
-    '',
+    [''],
     'Alive',
     '',
     '',
