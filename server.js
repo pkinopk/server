@@ -11,17 +11,21 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
+app.listen(process.env.PORT || 8000);
+console.log('Running locally at port 8000...');
+
 app.get('/', function(req, res) {
   res.header('Content-Type', 'application/json');
   res.json({ status: 'Working!' });
 });
 
-app.get('/characterlist/', function(req, res) {
+// ------------------------------- Game of Thrones Wiki -------------------------------
+app.get('/got-wiki/characterlist/', function(req, res) {
   res.header('Content-Type', 'application/json');
   res.json(service.characters);
 });
 
-app.post('/addcharacter', function(req, res) {
+app.post('/got-wiki/addcharacter', function(req, res) {
   res.header('Content-Type', 'application/json');
   if (!service.isDuplicated(req.body)) {
     service.characters.push(req.body);
@@ -31,7 +35,7 @@ app.post('/addcharacter', function(req, res) {
   }
 });
 
-app.put('/updatecharacter/:id', function(req, res) {
+app.put('/got-wiki/updatecharacter/:id', function(req, res) {
   console.log('body', req.body);
   if (req.params.id >= 0 && service.characters.length > req.params.id) {
     service.characters[req.params.id] = req.body;
@@ -41,17 +45,47 @@ app.put('/updatecharacter/:id', function(req, res) {
   }
   console.log(service.characters);
 });
+// ------------------------------- Game of Thrones Wiki -------------------------------
 
-// app.delete('/deletecharacter/:id', function(req, res) {
-//   console.log('body', req.body);
-//   if (req.params.id >= 0 && service.characters.length > req.params.id) {
-//     service.characters.splice(req.params.id, 1);
-//     res.send('{"success": true }');
-//   } else {
-//     res.send('{"success": false }');
-//   }
-//   console.log(service.characters);
-// });
+// ----------------------------------- Recipe Book  -----------------------------------
+app.get('recipe-book/recipelist', function(req, res) {
+  Recipe.getRecipes(function(err, recipes) {
+    if (err) {
+      console.log(err);
+    }
+    res.json(recipes);
+  });
+});
 
-app.listen(process.env.PORT || 8000);
-console.log('Running locally at port 8000...');
+app.post('recipe-book/addrecipe', function(req, res) {
+  var recipe = req.body;
+  Recipe.addRecipe(recipe, function(err, recipe) {
+    console.log(req);
+    if (err) {
+      console.log(err);
+    }
+    res.json(recipe);
+  });
+});
+
+app.delete('recipe-book/deleterecipe/:id', function(req, res) {
+  var id = req.params.id;
+  Recipe.deleteRecipe(id, function(err, recipe) {
+    if (err) {
+      console.log(err);
+    }
+    res.json(recipe);
+  });
+});
+
+app.get('recipe-book/retrieverecipe/:id', function(req, res) {
+  var id = req.params.id;
+  Recipe.getRecipeById(id, function(err, recipe) {
+    if (err) {
+      console.log(err);
+    }
+    res.json(recipe);
+  });
+});
+
+// ----------------------------------- Recipe Book  -----------------------------------
