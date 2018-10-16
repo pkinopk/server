@@ -89,3 +89,13 @@ app.get('recipe-book/retrieverecipe/:id', function(req, res) {
 });
 
 // ----------------------------------- Recipe Book  -----------------------------------
+
+// ---------------------------------- URL Shortener  ----------------------------------
+app.get('/shorturl/1', function(req, res) {
+  res.header('Content-Type', 'text/html');
+  res.send(
+    '<head><meta http-equiv="refresh" content="0; URL=https://www.google.com/"></head>'
+  );
+});
+
+// ---------------------------------- URL Shortener  ----------------------------------
