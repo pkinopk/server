@@ -56,7 +56,7 @@ app.put('/got-wiki/updatecharacter/:id', function(req, res) {
 // ------------------------------- Game of Thrones Wiki -------------------------------
 
 // ----------------------------------- Recipe Book  -----------------------------------
-app.get('recipe-book/recipelist', function(req, res) {
+app.get('/recipe-book/recipelist', function(req, res) {
   Recipe.getRecipes(function(err, recipes) {
     if (err) {
       console.log(err);
@@ -65,7 +65,7 @@ app.get('recipe-book/recipelist', function(req, res) {
   });
 });
 
-app.post('recipe-book/addrecipe', function(req, res) {
+app.post('/recipe-book/addrecipe', function(req, res) {
   var recipe = req.body;
   Recipe.addRecipe(recipe, function(err, recipe) {
     console.log(req);
@@ -76,7 +76,7 @@ app.post('recipe-book/addrecipe', function(req, res) {
   });
 });
 
-app.delete('recipe-book/deleterecipe/:id', function(req, res) {
+app.delete('/recipe-book/deleterecipe/:id', function(req, res) {
   var id = req.params.id;
   Recipe.deleteRecipe(id, function(err, recipe) {
     if (err) {
@@ -86,7 +86,7 @@ app.delete('recipe-book/deleterecipe/:id', function(req, res) {
   });
 });
 
-app.get('recipe-book/retrieverecipe/:id', function(req, res) {
+app.get('/recipe-book/retrieverecipe/:id', function(req, res) {
   var id = req.params.id;
   Recipe.getRecipeById(id, function(err, recipe) {
     if (err) {
