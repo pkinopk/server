@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const dns = require('dns');
 let app = express();
 var mongoose = require('mongoose');
 const service = require('./game-of-thrones.service');
@@ -26,6 +27,7 @@ mongoose.connect(
 );
 var db = mongoose.connection;
 var Recipe = require('./models/recipe');
+var ShortUrl = require('./models/short-url');
 
 // ------------------------------- Game of Thrones Wiki -------------------------------
 app.get('/got-wiki/characterlist/', function(req, res) {
@@ -101,20 +103,44 @@ app.get('/recipe-book/retrieverecipe/:id', function(req, res) {
 // ---------------------------------- URL Shortener -----------------------------------
 app.get('/shorturl/:id', function(req, res) {
   var id = req.params.id;
-  res.header('Content-Type', 'text/html');
-  res.send(
-    '<head><meta http-equiv="refresh" content="0; URL=https://www.google.com/"></head>'
-  );
-});
-
-app.post('shorturl/add', function(req, res) {
-  var recipe = req.body;
-  Recipe.addRecipe(recipe, function(err, recipe) {
-    console.log(req);
+  ShortUrl.getUrl({ short_url: id }, function(err, response) {
     if (err) {
       console.log(err);
+    } else if (response.length === 0) {
+      res.json({ error: 'No short url found for given input' });
+    } else {
+      console.log(response[0].original_url);
+      res.header('Content-Type', 'text/html');
+      res.send(
+        '<head><meta http-equiv="refresh" content="0; URL=www.google.com"></head>'
+      );
     }
-    res.json(recipe);
+  });
+});
+
+app.post('/shorturl/add', function(req, res) {
+  dns.lookup(req.body.original_url, function(err) {
+    if (err) {
+      console.log(err);
+      res.json({ error: 'invalid URL' });
+    } else {
+      //TODO: Check if original link already exist
+      ShortUrl.countDocuments(function(err, count) {
+        if (err) {
+          console.log(err);
+        } else {
+          var url = { original_url: req.body.original_url, short_url: count };
+          ShortUrl.addUrl(url, function(err, url) {
+            // console.log(req.body);
+            if (err) {
+              console.log(err);
+            }
+            console.log(url);
+          });
+          res.json(url);
+        }
+      });
+    }
   });
 });
 // ---------------------------------- URL Shortener -----------------------------------

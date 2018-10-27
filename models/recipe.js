@@ -7,7 +7,7 @@ var recipeSchema = new Schema({
   name: String,
   ingredients: [Schema.Types.Mixed],
   instructions: [String],
-  estimatedTime: Number,
+  estimatedTime: Number
 });
 
 var Recipe = (module.exports = mongoose.model('Recipe', recipeSchema));
