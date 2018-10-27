@@ -112,7 +112,9 @@ app.get('/shorturl/:id', function(req, res) {
       console.log(response[0].original_url);
       res.header('Content-Type', 'text/html');
       res.send(
-        '<head><meta http-equiv="refresh" content="0; URL=www.google.com"></head>'
+        '<head><meta http-equiv="refresh" content="0; URL=' +
+          response[0].original_url +
+          '"></head>'
       );
     }
   });
