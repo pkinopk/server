@@ -10,11 +10,6 @@ var shortUrlSchema = new Schema({
 
 var ShortUrl = (module.exports = mongoose.model('ShortUrl', shortUrlSchema));
 
-// // Get Recipes
-// module.exports.getRecipes = function(callback, limit) {
-//   Recipe.find(callback).limit(limit);
-// };
-
 // Get URL
 module.exports.getUrl = function(shortUrl, callback) {
   ShortUrl.find(shortUrl, callback);
@@ -24,9 +19,3 @@ module.exports.getUrl = function(shortUrl, callback) {
 module.exports.addUrl = function(shortUrl, callback) {
   ShortUrl.create(shortUrl, callback);
 };
-
-// // Delete by ID
-// module.exports.deleteRecipe = function(id, callback) {
-//   var query = { _id: id };
-//   Recipe.remove(query, callback);
-// };
