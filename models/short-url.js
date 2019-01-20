@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-// Recipes Schema
+// URL Schema
 var shortUrlSchema = new Schema({
   original_url: String,
   short_url: String

@@ -23,7 +23,8 @@ app.get('/', function(req, res) {
 
 // Connect to Mongoose
 mongoose.connect(
-  'mongodb://heroku_server_user:heroku220187@ds141623.mlab.com:41623/heroku_l5hn95g1'
+  'mongodb://heroku_server_user:heroku220187@ds141623.mlab.com:41623/heroku_l5hn95g1',
+  { useNewUrlParser: true }
 );
 var db = mongoose.connection;
 var Recipe = require('./models/recipe');
@@ -112,7 +113,7 @@ app.get('/shorturl/:id', function(req, res) {
       console.log(response[0].original_url);
       res.header('Content-Type', 'text/html');
       res.send(
-        '<head><meta http-equiv="refresh" content="0; URL=' +
+        '<head><meta http-equiv="refresh" content="0; URL=http://' +
           response[0].original_url +
           '"></head>'
       );
@@ -121,24 +122,58 @@ app.get('/shorturl/:id', function(req, res) {
 });
 
 app.post('/shorturl/add', function(req, res) {
-  dns.lookup(req.body.original_url, function(err) {
+  //Normalize URL (Removes "http://", "http://", "/" at the end of string and convert to lower case)
+  var normalizedURL;
+  if (req.body.original_url.startsWith('https://')) {
+    normalizedURL = req.body.original_url.replace('https://', '');
+  }
+  if (req.body.original_url.startsWith('http://')) {
+    normalizedURL = req.body.original_url.replace('http://', '');
+  }
+  if (req.body.original_url.endsWith('/')) {
+    normalizedURL = normalizedURL.slice(0, normalizedURL.length - 1);
+  }
+  normalizedURL = normalizedURL.toLowerCase();
+
+  console.log(normalizedURL);
+
+  dns.lookup(normalizedURL, function(err) {
+    //Check if site is valid using dns
     if (err) {
       console.log(err);
-      res.json({ error: 'invalid URL' });
+      res.json({ error: 'Invalid URL' });
     } else {
-      //TODO: Check if original link already exist
-      ShortUrl.countDocuments(function(err, count) {
+      //Check is the url already exists
+      ShortUrl.getUrl({ original_url: normalizedURL }, function(err, response) {
         if (err) {
           console.log(err);
-        } else {
-          var url = { original_url: req.body.original_url, short_url: count };
-          ShortUrl.addUrl(url, function(err, url) {
-            // console.log(req.body);
+        } else if (response.length === 0) {
+          console.log('Logging the response when it is new?');
+          console.log(response);
+          //New URL, add to db and return it
+          ShortUrl.countDocuments(function(err, count) {
             if (err) {
               console.log(err);
+            } else {
+              var url = {
+                original_url: normalizedURL,
+                short_url: count
+              };
+              ShortUrl.addUrl(url, function(err, url) {
+                if (err) {
+                  console.log(err);
+                }
+                console.log(url);
+              });
+              res.json(url);
             }
-            console.log(url);
           });
+        } else {
+          //URL exists, return the existing one
+          var url = {
+            original_url: response[0].original_url,
+            short_url: response[0].short_url
+          };
           res.json(url);
         }
       });
