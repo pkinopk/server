@@ -102,7 +102,7 @@ app.get('/recipe-book/retrieverecipe/:id', function(req, res) {
 // ----------------------------------- Recipe Book  -----------------------------------
 
 // ---------------------------------- URL Shortener -----------------------------------
-app.get('/shorturl/:id', function(req, res) {
+app.get('/antifier/:id', function(req, res) {
   var id = req.params.id;
   ShortUrl.getUrl({ short_url: id }, function(err, response) {
     if (err) {
@@ -117,7 +117,7 @@ app.get('/shorturl/:id', function(req, res) {
   });
 });
 
-app.post('/shorturl/add', function(req, res) {
+app.post('/antifier/add', function(req, res) {
   //Normalize URL (Removes "http://", "http://", "/" at the end of string and convert to lower case)
   var normalizedURL;
   if (req.body.original_url.startsWith('https://')) {
@@ -131,21 +131,21 @@ app.post('/shorturl/add', function(req, res) {
   }
   normalizedURL = normalizedURL.toLowerCase();
 
-  console.log(normalizedURL);
-
   dns.lookup(normalizedURL, function(err) {
     //Check if site is valid using dns
     if (err) {
-      console.log(err);
+      console.log('==========================================================================================');
+      console.log('Invalid URL');
+      console.log('OriginalURL: ' + req.body.original_url);
       res.json({ error: 'Invalid URL' });
+      console.log('Package sent');
+      console.log('==========================================================================================');
     } else {
       //Check is the url already exists
       ShortUrl.getUrl({ original_url: req.body.original_url }, function(err, response) {
         if (err) {
           console.log(err);
         } else if (response.length === 0) {
-          console.log('Logging the response when it is new?');
-          console.log(response);
           //New URL, add to db and return it
           ShortUrl.countDocuments(function(err, count) {
             if (err) {
@@ -159,18 +159,29 @@ app.post('/shorturl/add', function(req, res) {
                 if (err) {
                   console.log(err);
                 }
-                console.log(url);
               });
+              console.log('==========================================================================================');
+              console.log('New URL added to database');
+              console.log('OriginalURL: ' + req.body.original_url);
+              console.log('ShortURL: ' + req.headers.host + '/antifier/' + count);
               res.json(url);
+              console.log('Package sent');
+              console.log('==========================================================================================');
             }
           });
         } else {
           //URL exists, return the existing one
+          console.log('==========================================================================================');
+          console.log('URL existent at database');
+          console.log('OriginalURL: ' + response[0].original_url);
+          console.log('ShortURL: ' + req.headers.host + '/antifier/' + response[0].short_url);
           var url = {
             original_url: response[0].original_url,
             short_url: response[0].short_url
           };
           res.json(url);
+          console.log('Package sent');
+          console.log('==========================================================================================');
         }
       });
     }
