@@ -112,11 +112,7 @@ app.get('/shorturl/:id', function(req, res) {
     } else {
       console.log(response[0].original_url);
       res.header('Content-Type', 'text/html');
-      res.send(
-        '<head><meta http-equiv="refresh" content="0; URL=http://' +
-          response[0].original_url +
-          '"></head>'
-      );
+      res.send('<head><meta http-equiv="refresh" content="0; URL=http://' + response[0].original_url + '"></head>');
     }
   });
 });
@@ -130,8 +126,8 @@ app.post('/shorturl/add', function(req, res) {
   if (req.body.original_url.startsWith('http://')) {
     normalizedURL = req.body.original_url.replace('http://', '');
   }
-  if (req.body.original_url.endsWith('/')) {
-    normalizedURL = normalizedURL.slice(0, normalizedURL.length - 1);
+  if (normalizedURL.search('/') !== -1) {
+    normalizedURL = normalizedURL.slice(0, normalizedURL.search('/'));
   }
   normalizedURL = normalizedURL.toLowerCase();
 
@@ -144,7 +140,7 @@ app.post('/shorturl/add', function(req, res) {
       res.json({ error: 'Invalid URL' });
     } else {
       //Check is the url already exists
-      ShortUrl.getUrl({ original_url: normalizedURL }, function(err, response) {
+      ShortUrl.getUrl({ original_url: req.body.original_url }, function(err, response) {
         if (err) {
           console.log(err);
         } else if (response.length === 0) {
@@ -156,7 +152,7 @@ app.post('/shorturl/add', function(req, res) {
               console.log(err);
             } else {
               var url = {
-                original_url: normalizedURL,
+                original_url: req.body.original_url,
                 short_url: count
               };
               ShortUrl.addUrl(url, function(err, url) {
