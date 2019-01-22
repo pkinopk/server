@@ -58,7 +58,7 @@ app.put('/got-wiki/updatecharacter/:id', function(req, res) {
 });
 // ------------------------------- Game of Thrones Wiki -------------------------------
 
-// ----------------------------------- Recipe Book  -----------------------------------
+// ----------------------------------- Recipe Book ------------------------------------
 app.get('/recipe-book/recipelist', function(req, res) {
   Recipe.getRecipes(function(err, recipes) {
     if (err) {
@@ -99,9 +99,9 @@ app.get('/recipe-book/retrieverecipe/:id', function(req, res) {
   });
 });
 
-// ----------------------------------- Recipe Book  -----------------------------------
+// ----------------------------------- Recipe Book ------------------------------------
 
-// ---------------------------------- URL Shortener -----------------------------------
+// ------------------------------------ Antifier --------------------------------------
 app.get('/antifier/:id', function(req, res) {
   var id = req.params.id;
   ShortUrl.getUrl({ short_url: id }, function(err, response) {
@@ -111,15 +111,23 @@ app.get('/antifier/:id', function(req, res) {
       res.json({ error: 'No short url found for given input' });
     } else {
       console.log(response[0].original_url);
-      res.header('Content-Type', 'text/html');
-      res.send('<head><meta http-equiv="refresh" content="0; URL=http://' + response[0].original_url + '"></head>');
+      if (
+        response[0].original_url.startsWith('http://') === -1 ||
+        response[0].original_url.startsWith('https://') === -1
+      ) {
+        res.header('Content-Type', 'text/html');
+        res.send('<head><meta http-equiv="refresh" content="0; URL=http://' + response[0].original_url + '"></head>');
+      } else {
+        res.header('Content-Type', 'text/html');
+        res.send('<head><meta http-equiv="refresh" content="0; URL=' + response[0].original_url + '"></head>');
+      }
     }
   });
 });
 
 app.post('/antifier/add', function(req, res) {
   //Normalize URL (Removes "http://", "http://", "/" at the end of string and convert to lower case)
-  var normalizedURL;
+  var normalizedURL = req.body.original_url;
   if (req.body.original_url.startsWith('https://')) {
     normalizedURL = req.body.original_url.replace('https://', '');
   }
@@ -133,7 +141,7 @@ app.post('/antifier/add', function(req, res) {
 
   dns.lookup(normalizedURL, function(err) {
     //Check if site is valid using dns
-    if (err) {
+    if (err || !req.body.original_url) {
       console.log('==========================================================================================');
       console.log('Invalid URL');
       console.log('OriginalURL: ' + req.body.original_url);
@@ -187,4 +195,4 @@ app.post('/antifier/add', function(req, res) {
     }
   });
 });
-// ---------------------------------- URL Shortener -----------------------------------
+// ------------------------------------ Antifier --------------------------------------
